@@ -1,0 +1,5 @@
+# build artifact
+opsra-netlify.zip
+# OS / editor
+.DS_Store
+Thumbs.db
