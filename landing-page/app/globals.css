@@ -10,7 +10,7 @@
 :root[data-theme="dark"] {
   --bg: #0b0c0e; --surface: #131417; --ink: #f1f2f4; --mute: #8d929b; --line: #23252a;
   --btn: #f1f2f4; --btn-ink: #0b0c0e; --accent-soft: #14233d;
-  --card0: #0d1626; --card1: #15305c; --card2: #2b67d6; --glow: #6aa2ff; --grid: #8fb6ff26;
+  --card0: #0e1117; --card1: #121a2b; --card2: #1a2c4d; --glow: #4f86e8; --grid: #8fb6ff1f;
   --glass0: #c9dcf8; --glass1: #7fa6e0;
   color-scheme: dark;
 }

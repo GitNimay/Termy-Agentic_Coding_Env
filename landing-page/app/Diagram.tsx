@@ -2,7 +2,7 @@
 import { DIAGRAM_INNER, DIAGRAM_LABEL } from "./diagram-svg";
 import "./iso.css";
 
-const CARD = "M112 0H578A22 22 0 0 1 600 22V498A22 22 0 0 1 578 520H22A22 22 0 0 1 0 498V212A22 22 0 0 1 22 190H68A22 22 0 0 0 90 168V22A22 22 0 0 1 112 0Z";
+const CARD = "M22 0H578A22 22 0 0 1 600 22V498A22 22 0 0 1 578 520H22A22 22 0 0 1 0 498V22A22 22 0 0 1 22 0Z";
 
 export default function Diagram() {
   return (
