@@ -2,6 +2,7 @@
 const W = 160; // slab edge
 const T = 14; // slab thickness
 const CX = 200; // diagram center x
+const G = 190, G2 = 2 * G; // slab spacing
 const K = 0.866; // cos 30deg
 const PLANE = `matrix(${K} .5 ${-K} .5 0 0)`; // flat (x,y) -> isometric
 
@@ -31,20 +32,20 @@ const Tile = ({ x, y, w, h, on }: { x: number; y: number; w: number; h: number; 
 export default function Diagram() {
   const tw = 40, th = 64;
   return (
-    <svg viewBox="0 0 400 640" role="img" aria-label="Termy architecture: desktop UI, background daemon with ConPTY shells, SQLite state" className="diagram">
+    <svg viewBox="0 0 400 560" role="img" aria-label="Termy architecture: desktop UI, background daemon with ConPTY shells, SQLite state" className="diagram">
       <g className="link">
-        <line x1={CX} y1={W + T + 6} x2={CX} y2={215 + 6} />
-        <line x1={CX} y1={215 + W + T + 6} x2={CX} y2={430 + 6} />
+        <line x1={CX} y1={W + T + 6} x2={CX} y2={G + 6} />
+        <line x1={CX} y1={G + W + T + 6} x2={CX} y2={G2 + 6} />
       </g>
 
-      <Slab z={430}>
+      <Slab z={G2}>
         <text x={14} y={30} className="glyph">SQLITE</text>
         {[0, 1, 2, 3].map((i) => (
           <rect key={i} x={14} y={44 + i * 26} width={i === 3 ? 70 : 132} height={14} rx={3} className="tile" />
         ))}
       </Slab>
 
-      <Slab z={215}>
+      <Slab z={G}>
         <text x={14} y={26} className="glyph">DAEMON · CONPTY</text>
         {["pwsh", "pwsh core", "cmd"].map((s, i) => (
           <g key={s}>
