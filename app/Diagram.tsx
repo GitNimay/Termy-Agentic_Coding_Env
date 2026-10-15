@@ -87,16 +87,18 @@ function DaemonLayer() {
       <Glass />
       <circle className="spin" cx={85} cy={85} r={28} fill="none" stroke="#fff" strokeWidth={1.5}
         strokeDasharray="3 6" vectorEffect="non-scaling-stroke" />
+      <circle className="ripple" cx={85} cy={85} r={20} fill="none" stroke={ACCENT} strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
+      <circle className="ripple" style={delay(1.4)} cx={85} cy={85} r={20} fill="none" stroke={ACCENT} strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
       <circle cx={85} cy={85} r={20} fill="#fff" />
       {[77, 83.5, 90].map((y, i) => (
         <rect key={y} x={75} y={y} width={20} height={3.5} rx={1.5} fill={i === 1 ? ACCENT : INK} />
       ))}
       <clipPath id="pills">
-        {pills.map((_, j) => <rect key={j} x={16 + j * 48} y={134} width={42} height={16} rx={4} />)}
+        {pills.map((_, j) => <rect key={j} x={16 + j * 48} y={134} width={42} height={16} rx={2.5} />)}
       </clipPath>
       {pills.map((p, j) => (
         <g key={p}>
-          <rect x={16 + j * 48} y={134} width={42} height={16} rx={4} fill={INK} />
+          <rect x={16 + j * 48} y={134} width={42} height={16} rx={2.5} fill={INK} />
           <text x={22 + j * 48} y={144.5} className="dlabel" fill="#e8eef8">{p}</text>
         </g>
       ))}
@@ -153,23 +155,45 @@ function HostLayer() {
   );
 }
 
+// Data flowing between layers: input down the left edge, output back up the right edge.
+function Beams() {
+  const off = K * 18 * S;
+  const xs = [CX - K * W + off, CX + K * W - off];
+  const segs = [ZA, ZB].map((z) => [z + W / 2 + 14, z + 112 + W / 2 - 4]);
+  return (
+    <g>
+      {xs.map((x, side) =>
+        segs.map(([y0, y1], k) => (
+          <g key={`${side}${k}`}>
+            <line x1={x} y1={y0} x2={x} y2={y1} className="beam" />
+            {[0, 1].map((n) => (
+              <circle key={n} className={side ? "packet up" : "packet down"} style={delay(n * 1.3 + k * 0.65 + side * 0.4)}
+                cx={x} cy={side ? y1 : y0} r={2.6} fill={ACCENT} />
+            ))}
+          </g>
+        ))
+      )}
+    </g>
+  );
+}
+
 export default function Diagram() {
   return (
     <svg viewBox="0 0 600 520" className="diagram" role="img"
       aria-label="Termy architecture: desktop window with split panes, a background daemon owning ConPTY sessions, and a local host with shells and SQLite state">
       <defs>
         <linearGradient id="bg" x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0" stopColor="#eef4fd" />
-          <stop offset=".5" stopColor="#b7d1f7" />
-          <stop offset="1" stopColor="#5b9bf1" />
+          <stop offset="0" className="bg0" />
+          <stop offset=".5" className="bg1" />
+          <stop offset="1" className="bg2" />
         </linearGradient>
         <radialGradient id="glow" cx=".5" cy=".55" r=".5">
-          <stop offset="0" stopColor="#fff" stopOpacity=".55" />
-          <stop offset="1" stopColor="#fff" stopOpacity="0" />
+          <stop offset="0" className="glow0" />
+          <stop offset="1" className="glow1" />
         </radialGradient>
         <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#f3f8ff" />
-          <stop offset="1" stopColor="#b9d3f8" />
+          <stop offset="0" className="glass0" />
+          <stop offset="1" className="glass1" />
         </linearGradient>
         <linearGradient id="shine" x1="0" x2="1">
           <stop offset="0" stopColor="#fff" stopOpacity="0" />
@@ -184,7 +208,7 @@ export default function Diagram() {
         <clipPath id="card"><path d={CARD} /></clipPath>
         <pattern id="grid" width="34" height="34" patternUnits="userSpaceOnUse"
           patternTransform={`translate(${CX} ${ZC + 58}) ${PLANE}`}>
-          <path d="M34 0H0V34" fill="none" stroke="#fff" strokeOpacity=".55" />
+          <path d="M34 0H0V34" fill="none" className="gridline" />
         </pattern>
         <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9" /></filter>
         <filter id="drop" x="-30%" y="-30%" width="160%" height="180%">
@@ -203,6 +227,7 @@ export default function Diagram() {
         fill="#123a7a" opacity=".35" filter="url(#soft)" />
 
       <g className="in" style={delay(0)}><HostLayer /></g>
+      <g className="in" style={delay(0.6)}><Beams /></g>
       <g className="in" style={delay(0.15)}>
         <g className="float-b" filter="url(#drop)"><DaemonLayer /></g>
       </g>

@@ -5,11 +5,9 @@ import "./globals.css";
 
 const sans = Inter({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-sans" });
 
+// Paper Mono is only used for terminal glyphs inside the diagram.
 const mono = localFont({
-  src: [
-    { path: "./fonts/PaperMono-Regular.woff2", weight: "400" },
-    { path: "./fonts/PaperMono-Medium.woff2", weight: "500" },
-  ],
+  src: [{ path: "./fonts/PaperMono-Medium.woff2", weight: "500" }],
   variable: "--font-mono",
 });
 
@@ -19,9 +17,14 @@ export const metadata: Metadata = {
     "Open-source terminal workspace for Windows, engineered in Rust. Project workspaces, split panes, and sessions that survive closing the window.",
 };
 
+const themeScript = `try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
+    <html lang="en" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>{children}</body>
     </html>
   );
