@@ -6,17 +6,17 @@ const REPO = "https://github.com/GitNimay/Termy-Agentic_Coding_Env";
 const RELEASE = `${REPO}/releases/latest`;
 const WINDOWS = "M3 3h8.5v8.5H3zM12.5 3H21v8.5h-8.5zM3 12.5h8.5V21H3zM12.5 12.5H21V21h-8.5z";
 
-// egui has no official mark, so it is listed by name only.
-const stack: [string, string | null][] = [
-  ["Rust", siRust.path],
-  ["wgpu", siWgpu.path],
+// Brand colours; Rust and SQLite use their logo tones (their simple-icons hex is near-black). egui has no official mark.
+const stack: [string, string | null, string?][] = [
+  ["Rust", siRust.path, "#CE422B"],
+  ["wgpu", siWgpu.path, `#${siWgpu.hex}`],
   ["egui", null],
-  ["ConPTY", WINDOWS],
-  ["SQLite", siSqlite.path],
+  ["ConPTY", WINDOWS, "#0078D4"],
+  ["SQLite", siSqlite.path, "#0F80CC"],
 ];
 
-const Icon = ({ d, size = 16 }: { d: string; size?: number }) => (
-  <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true"><path d={d} /></svg>
+const Icon = ({ d, size = 16, color = "currentColor" }: { d: string; size?: number; color?: string }) => (
+  <svg viewBox="0 0 24 24" width={size} height={size} fill={color} aria-hidden="true"><path d={d} /></svg>
 );
 
 export default function Home() {
@@ -52,8 +52,8 @@ export default function Home() {
           </div>
           <div className="built">
             <span className="label">Built with</span>
-            {stack.map(([name, d]) => (
-              <span key={name} className="tech">{d && <Icon d={d} />}{name}</span>
+            {stack.map(([name, d, color]) => (
+              <span key={name} className="tech">{d && <Icon d={d} color={color} />}{name}</span>
             ))}
           </div>
         </div>
